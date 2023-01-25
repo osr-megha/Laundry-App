@@ -18,14 +18,7 @@ const styles = StyleSheet.create({
         alignItems:"center",
         borderRadius:5,
         // borderWidth:1,
-        borderColor:"#a3468f",
-        // shadowProp: {  
-        //   shadowOffset: {width: -2, height: 4},  
-        //   shadowColor: '#171717',  
-        //   shadowOpacity: 0.2,  
-        //   shadowRadius: 3,  
-        // },  
-        
+        borderColor:"#a3468f",    
     },
     text:{
         fontSize:20,

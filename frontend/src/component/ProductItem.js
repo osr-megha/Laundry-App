@@ -1,25 +1,10 @@
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React, { useState, useContext } from "react";
-import DropDownPicker from "react-native-dropdown-picker";
-import QuantitySelector from "./QuantitySelector";
 import { CartContent } from "../API/Context";
 
 const ProductItem = ({prod}) => {
 
   const {cart, setCart} = useContext(CartContent);
-
-
-    // const {item} = props;
-
-  // const [open, setOpen] = useState(false);
-  // const [value, setValue] = useState("");
-  // const [items, setItems] = useState([
-  //   { label: "Men", value: "men" },
-  //   { label: "Women", value: "women" },
-  //   { label: "Child", value: "child" },
-  // ]);
-
-  // const [quantity, setQuantity] = useState(0);
 
   const [num, setNum] = useState(0);
 
@@ -61,26 +46,6 @@ const ProductItem = ({prod}) => {
               ₹{prod.price}
               </Text>
             </View>
-            {/*<View>
-              <Text style={styles.picker}>
-                <DropDownPicker
-                  style={{
-                    padding: 0,
-                    margin: 0,
-                    borderWidth: 0,
-                    backgroundColor: "#fff",
-                  }}
-                  placeholder="Men"
-                  multiple={false}
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                />
-              </Text>
-                </View>*/}
           </View>
         </View>
         <View style={styles.rightContainer}>
@@ -96,9 +61,6 @@ const ProductItem = ({prod}) => {
           </TouchableOpacity>
           </View>
         </View>
-        {/*<View style={styles.rightContainer}>
-        <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
-      </View> */}
       </View>
     </View>
   );

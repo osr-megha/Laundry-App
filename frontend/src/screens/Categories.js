@@ -15,18 +15,8 @@ import { CartContent } from "../API/Context";
 import serviceHeading from "../data/serviceHeading";
 
 const Categories = ({ navigation }) => {
-//   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { cart, activeIndex, setActiveIndex, total, setTotal } = useContext(CartContent);
-
-  // const [cart, setCart] = useState([]);
-  // console.log(cart);
-
-//   const [total, setTotal] = useState();
-
-//   useEffect(() => {
-//     setTotal(cart.reduce((acc, curr) => acc + Number(curr.price), 0));
-//   }, [cart]);
+  const { cart, activeIndex, setActiveIndex, total } = useContext(CartContent);
 
   return (
     <View style={styles.mainContainer}>
