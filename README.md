@@ -2,5 +2,11 @@
 
 It is an application based on React-Native Expo.
 
--to start - expo start.
+##for starting frontend -
+cd frontend
+npm start
+
+##for starting backend - 
+cd backend
+nodemon index.js
 
