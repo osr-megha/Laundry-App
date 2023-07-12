@@ -1,250 +1,368 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { useContext } from "react";
-import Home from "./Home";
-import Button from "../component/Button";
-import { CartContent } from "../API/Context";
+import React from "react";
 
-const OrderDetail = ({ navigation }) => {
-  const { total, cart, tax, setTax, subTotal, setSubTotal, amt, setAmt } =
-    useContext(CartContent);
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  Pressable,
+} from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { Ionicons } from "@expo/vector-icons";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  cleanCart,
+  decrementQuantity,
+  incrementQuantity,
+} from "../../CartReducer";
+import { decrementQty, incrementQty } from "../../ProductReducer";
+import { doc, setDoc } from "firebase/firestore";
+import { auth, db } from "../../firebase";
+
+const OrderDetail = () => {
+  const cart = useSelector((state) => state.cart.cart);
+  const route = useRoute();
+  const total = cart
+    .map((item) => item.quantity * item.price)
+    .reduce((curr, prev) => curr + prev, 0);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
+  const userUid = auth.currentUser.uid;
+
+  const placeOrder = async () => {
+    navigation.navigate("PlaceOrder");
+    dispatch(cleanCart());
+    await setDoc(
+      doc(db, "users", `${userUid}`),
+      {
+        orders: { ...cart },
+        pickUpDetails: route.params,
+      },
+      {
+        merge: true,
+      }
+    );
+  };
 
   return (
-    <View style={styles.mainContainer}>
-      {/**1st section */}
-      <View style={styles.homeTop}>
-        <Image
-          style={styles.headerImage}
-          resizeMode="contain"
-          source={{
-            uri: "https://cdn-icons-png.flaticon.com/512/2875/2875878.png",
-          }}
-        />
-        <Text style={{ marginTop: 5, fontWeight: "bold", lineHeight: 20 }}>
-          Thank You for Choosing Us!!
-        </Text>
-        <Text style={{ marginTop: 5, lineHeight: 15, color: "#929c94" }}>
-          Your Pick Up has been confirmed
-        </Text>
-      </View>
-
-      {/**2nd section */}
-      {/** Ordered Status - to come after payment success */}
-      <View style={{ borderWidth: 0.5, margin: 5, borderRadius: 20 }}>
-        <View style={styles.orderDetails}>
-          <Text style={{ fontWeight: "bold" }}>
-            Order #123
-            <Text style={{ fontSize: 12, color: "#929c94" }}>(2bags) </Text>
-          </Text>
-          <Text>Pick Up Time</Text>
-          <Text>Delivery Time</Text>
-        </View>
-
-        {/** Ordered Items List & their Category */}
-        <View style={styles.orderItems}>
-          <Text style={styles.selectedCategory}>Wash & Fold</Text>
-          <View>
-            <View style={styles.itemLines}>
-              <Text>
-                2 * Tshirt
-                <Text style={{ fontSize: 12, color: "#929c94" }}>(Men) </Text>
-              </Text>
-            </View>
-            <View style={styles.itemLines}>
-              <Text>
-                3 * Jeans
-                <Text style={{ fontSize: 12, color: "#929c94" }}>(Men) </Text>
-              </Text>
-            </View>
+    <React.Fragment>
+      <ScrollView style={{ marginTop: 5 }}>
+        {total === 0 ? (
+          <View style={{ justifyContent: "center", alignItems: "center" }}>
+            <Text style={{ marginTop: 40 }}>Your cart is empty</Text>
           </View>
-          <Text style={styles.selectedCategory}>Wash & Iron</Text>
-          <View style={styles.itemLines}>
-            <Text>
-              2 * Tshirt
-              <Text style={{ fontSize: 12, color: "#929c94" }}>(Men) </Text>
-            </Text>
-          </View>
-          <View style={styles.itemLines}>
-            <Text>
-              3 * Jeans
-              <Text style={{ fontSize: 12, color: "#929c94" }}>(Men) </Text>
-            </Text>
-          </View>
-        </View>
-        {/** Invoice details */}
-
-        <View style={{ margin: 10, borderTopWidth: 0.5, paddingTop: 5 }}>
-          <View style={styles.priceContainer}>
-            <View style={styles.details}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  marginTop: 5,
-                }}
-              >
-                <Text>Subtotal</Text>
-                <Text>₹{total}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text>Tax</Text>
-                <Text>₹{tax}</Text>
-              </View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  borderTopWidth: 0.5,
-                  paddingTop: 5,
-                }}
-              >
-                <Text style={{ fontWeight: "bold", marginTop: 5 }}>Total</Text>
-                <Text style={{ fontWeight: "bold", marginTop: 5 }}>
-                  ₹{subTotal}
-                </Text>
-              </View>
-            </View>
-          </View>
-        </View>
-      </View>
-      {/**Order Status */}
-      <View style={styles.orderStatus}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between", marginBottom:15 }}
-          >
-            <Image
+        ) : (
+          <React.Fragment>
+            <View
               style={{
-                marginRight: 15,
-                width: 30,
-                height: 30,
-                resizeMode: "contain",
+                padding: 10,
+                flexDirection: "row",
+                alignItems: "center",
               }}
-              source={{
-                uri: "https://cdn-icons-png.flaticon.com/512/2066/2066664.png",
+            >
+              <Ionicons
+                onPress={() => navigation.goBack()}
+                name="arrow-back"
+                size={24}
+                color="black"
+              />
+              <Text>Your Bucket</Text>
+            </View>
+            <Pressable
+              style={{
+                backgroundColor: "white",
+                borderRadius: 12,
+                marginLeft: 10,
+                marginRight: 10,
+                padding: 14,
               }}
-            />
-            <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-              Order Status
+            >
+              {cart.map((item, index) => (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: 12,
+                  }}
+                  key={index}
+                >
+                  <Text style={{ width: 100, fontSize: 16, fontWeight: "500" }}>
+                    {item.name}
+                  </Text>
+                  {/* - + button */}
+                  <Pressable
+                    style={{
+                      flexDirection: "row",
+                      paddingHorizontal: 10,
+                      paddingVertical: 5,
+                      alignItems: "center",
+                      borderColor: "#BEBEBE",
+                      borderWidth: 0.5,
+                      borderRadius: 10,
+                    }}
+                  >
+                    <Pressable
+                      onPress={() => {
+                        dispatch(decrementQuantity(item)); // cart
+                        dispatch(decrementQty(item)); // product
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: "#088F8F",
+                          paddingHorizontal: 6,
+                          fontWeight: "600",
+                        }}
+                      >
+                        -
+                      </Text>
+                    </Pressable>
+
+                    <Pressable>
+                      <Text
+                        style={{
+                          fontSize: 19,
+                          color: "#088F8F",
+                          paddingHorizontal: 8,
+                          fontWeight: "600",
+                        }}
+                      >
+                        {item.quantity}
+                      </Text>
+                    </Pressable>
+
+                    <Pressable
+                      onPress={() => {
+                        dispatch(incrementQuantity(item)); // cart
+                        dispatch(incrementQty(item)); //product
+                      }}
+                    >
+                      <Text
+                        style={{
+                          fontSize: 20,
+                          color: "#088F8F",
+                          paddingHorizontal: 6,
+                          fontWeight: "600",
+                        }}
+                      >
+                        +
+                      </Text>
+                    </Pressable>
+                  </Pressable>
+
+                  <Text style={{ fontSize: 16, fontWeight: "500" }}>
+                    ₹{item.price * item.quantity}
+                  </Text>
+                </View>
+              ))}
+            </Pressable>
+
+            <View style={{ padding: 10 }}>
+              <Text>Billing Details</Text>
+              <View
+                style={{
+                  backgroundColor: "white",
+                  borderRadius: 7,
+                  padding: 10,
+                  marginTop: 15,
+                }}
+              >
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "400", color: "gray" }}
+                  >
+                    Item Total
+                  </Text>
+                  <Text style={{ fontSize: 18, fontWeight: "400" }}>
+                    ₹{total}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: 8,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "400", color: "gray" }}
+                  >
+                    Delivery Fee | 1.2KM
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "400",
+                      color: "#088F8F",
+                    }}
+                  >
+                    FREE
+                  </Text>
+                </View>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "500", color: "gray" }}
+                  >
+                    Free Delivery on Your order
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderColor: "gray",
+                    height: 1,
+                    borderWidth: 0.5,
+                    marginTop: 10,
+                  }}
+                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: 10,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "500", color: "gray" }}
+                  >
+                    Selected Date
+                  </Text>
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "400",
+                      color: "#088F8F",
+                    }}
+                  ></Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "500", color: "gray" }}
+                  >
+                    No Of Days
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "400",
+                      color: "#088F8F",
+                    }}
+                  >
+                    {route.params.no_Of_days}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: 10,
+                  }}
+                >
+                  <Text
+                    style={{ fontSize: 18, fontWeight: "500", color: "gray" }}
+                  >
+                    Selected Pick Up Time
+                  </Text>
+
+                  <Text
+                    style={{
+                      fontSize: 18,
+                      fontWeight: "400",
+                      color: "#088F8F",
+                    }}
+                  >
+                    {route.params.selectedTime}
+                  </Text>
+                </View>
+                <View
+                  style={{
+                    borderColor: "gray",
+                    height: 1,
+                    borderWidth: 0.5,
+                    marginTop: 10,
+                  }}
+                />
+
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    marginVertical: 8,
+                  }}
+                >
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    To Pay
+                  </Text>
+                  <Text style={{ fontSize: 18, fontWeight: "bold" }}>
+                    {total}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </React.Fragment>
+        )}
+      </ScrollView>
+
+      {total === 0 ? null : (
+        <Pressable
+          style={{
+            marginTop: "auto",
+            backgroundColor: "#088F8F",
+            padding: 10,
+            marginBottom: 40,
+            margin: 15,
+            borderRadius: 7,
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <View>
+            <Text style={{ fontSize: 14, fontWeight: "500", color: "white" }}>
+              {cart.length} item | ₹ {total}
+            </Text>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: "400",
+                color: "white",
+                marginVertical: 6,
+              }}
+            >
+              extra charges might apply
             </Text>
           </View>
-          <TouchableOpacity>
-          <Text style={{ fontSize: 12, color: "#e64cc4",cursor:"pointer" }}>View Details</Text>
-          </TouchableOpacity>
-          </View>
-        <View style={{ flexDirection: "row", alignItems:"center"}}>
-          <View style={styles.dot}></View>
-          <View style={{justifyContent:"center",padding:5}}>
-          <Text style={{fontWeight:"bold"}}>Delivery Details</Text>
-          <Text style={{ fontSize: 12, color: "#929c94", justifyContent:"space-between",}}>
-           PickUp Time      Delivery Time
-          </Text>
-          </View>
-        </View>
-      </View>
-
-      <TouchableOpacity
-        style={{
-          marginTop: 5,
-          width: "100%",
-          // backgroundColor: "#fff",
-          padding: 10,
-          borderWidth: 1,
-          borderRadius: 20,
-          backgroundColor: "#e64cc4",
-          shadowColor: "#000",
-          shadowOffset: {
-            width: 0,
-            height: 2,
-          },
-          shadowOpacity: 0.25,
-          shadowRadius: 3.84,
-          elevation: 5,
-        }}
-      >
-        <Button
-          text={"Schedule a Laundry"}
-          onPress={() => navigation.navigate(Home)}
-        />
-      </TouchableOpacity>
-    </View>
+          <Pressable onPress={placeOrder}>
+            <Text style={{ fontSize: 17, fontWeight: "600", color: "white" }}>
+              Place order
+            </Text>
+          </Pressable>
+        </Pressable>
+      )}
+    </React.Fragment>
   );
 };
 
-const styles = StyleSheet.create({
-  mainContainer: {
-    height: "100%",
-    display: "flex",
-    // justifyContent: "space-between",
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
-    textAlign: "center",
-  },
-  homeTop: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    marginBottom: 5,
-  },
-  headerImage: {
-    height: undefined,
-    width: "20%",
-    aspectRatio: 1,
-    display: "flex",
-    alignItems: "center",
-    marginTop: 30,
-    borderRadius: 20,
-  },
-  orderDetails: {
-    margin: 10,
-    // padding:5,
-    borderBottomWidth: 0.5,
-    marginBottom: 5,
-  },
-  orderItems: {
-    marginLeft: 10,
-  },
-  selectedCategory: {
-    alignItems: "flex-start",
-    fontSize: 15,
-    marginLeft: 5,
-    marginBottom: 5,
-    padding: 5,
-    fontWeight: "bold",
-  },
-  title: {
-    alignItems: "flex-start",
-    fontSize: 18,
-    margin: 5,
-  },
-  orderStatus: {
-    margin: 5,
-    padding: 10,
-    borderWidth: 0.5,
-    marginBottom: 5,
-    borderRadius: 20,
-  },
-  dot:{
-    width: 15,
-    height: 15,
-    borderWidth: 1,
-    backgroundColor: "#35662b",
-    borderRadius: 50,
-    marginRight: 15,
-    shadowColor: "#1c660d",
-    shadowOffset: {
-      width: 0,
-      height: 12,
-    },
-    shadowOpacity: 0.23,
-    shadowRadius: 2.62,
-    elevation: 4,
-  }
-});
-
 export default OrderDetail;
+
+const styles = StyleSheet.create({});
