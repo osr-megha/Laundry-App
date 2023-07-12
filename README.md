@@ -8,7 +8,7 @@ Laundry-App
   <h1>App is built using</h1>
   <br/>
   <p>
-  <img src="https://cdn.iconscout.com/icon/free/png-256/free-firebase-3521427-2944871.png" alt="firebase" width="40" height="40" />
+  <img src="https://cdn.iconscout.com/icon/free/png-256/free-firebase-3521427-2944871.png" alt="firebase" width="20" height="20" />
     <span>Firebase</span>
   </p>
 </div>
