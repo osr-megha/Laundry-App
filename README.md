@@ -21,15 +21,13 @@ Laundry-App
   </p>
 
 <div>
-![Intro](https://github.com/osr-megha/Laundry-App/assets/13361201/bee6c6d3-61dd-4007-8943-df911feb047d)
+  <img src="https://github.com/osr-megha/Laundry-App/assets/13361201/bee6c6d3-61dd-4007-8943-df911feb047d" alt="" width="240" height="480"/>
+  <img src="https://github.com/osr-megha/Laundry-App/assets/13361201/7d569233-16f0-4cf5-adce-53e9cc1ea4f0" alt="" width="240" height="480"/>
+  <img src="https://github.com/osr-megha/Laundry-App/assets/13361201/360f35de-f8c1-45b5-a3e8-c9cb0ba2687b" alt="" width="240" height="480"/>
+  <img src="https://github.com/osr-megha/Laundry-App/assets/13361201/ed3b1c6e-5c9d-44d4-9458-d974ad9e8764" alt="" width="240" height="480"/>
+  <img src="https://github.com/osr-megha/Laundry-App/assets/13361201/557c90ff-fa02-405b-bce3-0dc84ea9be8a" alt="" width="240" height="480"/>
 
-![HomePg](https://github.com/osr-megha/Laundry-App/assets/13361201/7d569233-16f0-4cf5-adce-53e9cc1ea4f0)
-
-  ![PickUp](https://github.com/osr-megha/Laundry-App/assets/13361201/360f35de-f8c1-45b5-a3e8-c9cb0ba2687b)
-
-
-</div>
-  
+  </div>
 </div>
 
 ##for starting frontend -
