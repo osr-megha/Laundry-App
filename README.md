@@ -1,7 +1,7 @@
 <h1 align="center"><strong>Laundry-App</strong></h1>
 
 <div id='header' align='center'>
-  <img src="https://img.freepik.com/free-vector/laundry-dry-cleaning-concept-illustration_114360-7391.jpg?w=740&t=st=1689160154~exp=1689160754~hmac=c15c2d9f3a778556641671f00cf20d2e7e024232ad70609203357033a95c286e" alt="laundry" width="440" height="440"/>
+  <img src="https://img.freepik.com/free-vector/ironing-board-with-laundry-service-icons_24877-50297.jpg?w=740&t=st=1689234665~exp=1689235265~hmac=abc9e3292a8440fc24d36ad9c31f87c2f1a38680d3ab5e273e73cfac2f11eb12" alt="laundry" width="440" height="440"/>
 </div>
 
 <div>
