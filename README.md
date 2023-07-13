@@ -35,8 +35,5 @@
   </div>
 </div>
 
-##for starting frontend -
-cd frontend
-npm start
 
 
