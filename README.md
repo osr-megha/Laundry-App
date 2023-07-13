@@ -8,9 +8,28 @@ Laundry-App
   <h1>App is built using</h1>
   <br/>
   <p>
+  <img src="https://cdn1.iconfinder.com/data/icons/soleicons-solid-vol-1/64/reactjs_javascript_library_atom_atomic_react-512.png" alt="firebase" width="20" height="20" />
+    <span>React Native</span>
+  </p>
+  <p>
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSr-HmrvKegvP2MEpPciZ8pNRUKXqBPIFdKF11HN3HL3iY5SclLsi69cUMXN4OjPtMw3Ss&usqp=CAU" alt="expo" width="20" height="20" />
+    <span>Expo</span>
+  </p>
+  <p>
   <img src="https://cdn.iconscout.com/icon/free/png-256/free-firebase-3521427-2944871.png" alt="firebase" width="20" height="20" />
     <span>Firebase</span>
   </p>
+
+<div>
+![Intro](https://github.com/osr-megha/Laundry-App/assets/13361201/bee6c6d3-61dd-4007-8943-df911feb047d)
+
+![HomePg](https://github.com/osr-megha/Laundry-App/assets/13361201/7d569233-16f0-4cf5-adce-53e9cc1ea4f0)
+
+  ![PickUp](https://github.com/osr-megha/Laundry-App/assets/13361201/360f35de-f8c1-45b5-a3e8-c9cb0ba2687b)
+
+
+</div>
+  
 </div>
 
 ##for starting frontend -
