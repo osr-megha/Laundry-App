@@ -34,7 +34,7 @@ const Contact = ({ navigation }) => {
       <Text style={styles.mainHeader}> Your Inputs are valuable to us </Text>
 
       <Text style={styles.description}>
-        You can reach us anytime via megha-sharma@live.com
+        You can reach us anytime via megha@appler.xyz
       </Text>
 
       <View style={styles.inputContainer}>
